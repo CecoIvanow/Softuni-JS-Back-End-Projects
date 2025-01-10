@@ -40,6 +40,9 @@ function formDataRetrieval(dataParts) {
     const imageFile = dataParts.splice(3, 1).at(0);
     const rawData = dataParts.splice(1, 3);
 
+    const catId = uuid();
+    newCatData[catId] = {};
+
     const imageRetrieval = (imageFile, catData) => new Promise((resolve, reject) => {
         const [metaData, imageData] = imageFile.split(EOL + EOL);
         const imageName = metaData.match(/filename="(.+)"/).at(1);
@@ -52,8 +55,8 @@ function formDataRetrieval(dataParts) {
 
         fs.writeFile(savePath, imageData, { encoding: 'binary' })
             .then(() => {
-                catData.id = uuid();
-                catData.imageUrl = `content/images/${imageName}`;
+                catData[catId].id = catId;
+                catData[catId].imagePath = `/content/images/${imageName}`;
                 resolve();
             })
             .catch(error => {
@@ -69,9 +72,9 @@ function formDataRetrieval(dataParts) {
         const description = descriptionRawData.split(EOL + EOL).at(1).split(EOL).at(0);
         const breed = breedRawData.split(EOL + EOL).at(1).split(EOL).at(0);
 
-        catData.name = name;
-        catData.description = description;
-        catData.breed = breed;
+        catData[catId].name = name;
+        catData[catId].description = description;
+        catData[catId].breed = breed;
         resolve();
     })
 
@@ -79,6 +82,24 @@ function formDataRetrieval(dataParts) {
         imageRetrieval(imageFile, newCatData),
         rawDataRetrieval(rawData, newCatData)
     ])
-        .then(() => {})
+        .then(() => initCats(newCatData))
         .catch(error => console.error(error.message));
+}
+
+function initCats(newCat) {
+    let cats = [];
+
+    fs.readFile('./data/cats.json', { encoding: 'utf-8' })
+        .then(resp => {
+            cats.push(JSON.parse(resp)[0]);
+            addNewCat(newCat, cats);
+        })
+        .catch(error => console.error(error.message));
+}
+
+function addNewCat(newCat, existingCats) {
+    existingCats.push(newCat);
+    const catsJson = JSON.stringify(existingCats, null, 2);
+    fs.writeFile('./data/cats.json', catsJson, { encoding: 'utf-8' })
+        .catch(error => console.error(error));
 }

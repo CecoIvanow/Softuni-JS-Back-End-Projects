@@ -47,5 +47,6 @@ function extractBreedInput(queryString) {
 function addNewBreed(newBreed, existingBreeds) {
     existingBreeds.push(newBreed[0]);
     const breedsJson = JSON.stringify(existingBreeds, null, 2);
-    fs.writeFile('./data/breeds.json', breedsJson, { encoding: 'utf-8'});
+    fs.writeFile('./data/breeds.json', breedsJson, { encoding: 'utf-8'})
+    .catch(error => console.error(error))
 }
