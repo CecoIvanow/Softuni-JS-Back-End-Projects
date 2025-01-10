@@ -19,7 +19,7 @@ const server = http.createServer((req, res) => {
             addCatLogic(res);
             break;
         case '/cats/add-breed':
-            addBreedLogic(res);
+            addBreedLogic(req, res);
             break;
         default:
             break;
