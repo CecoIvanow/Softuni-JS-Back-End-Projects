@@ -14,6 +14,7 @@ export function addBreedLogic(req, res) {
         'content-type': 'text/html'
     });
     res.write(addBreedHtml);
+    res.end();
 }
 
 function initBreeds(req) {

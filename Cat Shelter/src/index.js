@@ -16,16 +16,12 @@ const server = http.createServer((req, res) => {
             homePageLogic(res);
             break;
         case '/cats/add-cat':
-            addCatLogic(res);
+            addCatLogic(req, res);
             break;
         case '/cats/add-breed':
             addBreedLogic(req, res);
             break;
-        default:
-            break;
     }
-
-    res.end();
 })
 
 server.listen(5050);
