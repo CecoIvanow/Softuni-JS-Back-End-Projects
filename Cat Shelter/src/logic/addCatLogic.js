@@ -97,7 +97,7 @@ function initCats(newCat) {
 
     fs.readFile('./data/cats.json', { encoding: 'utf-8' })
         .then(resp => {
-            cats.push(JSON.parse(resp)[0]);
+            cats.push(JSON.parse(resp));
             if (cats[0] === undefined) {
                 cats = [];
             }
@@ -107,8 +107,8 @@ function initCats(newCat) {
 }
 
 function addNewCat(newCat, existingCats) {
-    existingCats.push(newCat);
-    const catsJson = JSON.stringify(existingCats, null, 2);
+    existingCats[0].push(newCat);
+    const catsJson = JSON.stringify(existingCats[0], null, 2);
     fs.writeFile('./data/cats.json', catsJson, { encoding: 'utf-8' })
         .then(() => console.log('It works!'))
         .catch(error => console.error(error.message));
