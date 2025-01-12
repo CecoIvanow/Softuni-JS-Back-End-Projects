@@ -39,30 +39,34 @@ function formDataRetrieval(dataParts) {
     const newCatData = {};
     const imageFile = dataParts.splice(3, 1).at(0);
     const rawData = dataParts.splice(1, 3);
-
     const catId = uuid();
+
     newCatData[catId] = {};
 
     const imageRetrieval = (imageFile, catData) => new Promise((resolve, reject) => {
         const [metaData, imageData] = imageFile.split(EOL + EOL);
         const imageName = metaData.match(/filename="(.+)"/).at(1);
         let curDir = import.meta.dirname.split('\\');
+        let savePath = '';
         curDir.pop();
         curDir.pop();
         curDir = curDir.join('\\');
 
-        const savePath = path.join(curDir, 'content', 'images', imageName);
-
-        fs.writeFile(savePath, imageData, { encoding: 'binary' })
+        fs.mkdir(`./content/images/cat_images/${catId}`)
+            .then(() => savePath = path.join(curDir, 'content', 'images', 'cat_images', catId, imageName))
             .then(() => {
-                catData[catId].id = catId;
-                catData[catId].imagePath = `/content/images/${imageName}`;
-                resolve();
+                fs.writeFile(savePath, imageData, { encoding: 'binary' })
+                    .then(() => {
+                        catData[catId].id = catId;
+                        catData[catId].imagePath = `/content/images/cat_images/${catId}/${imageName}`;
+                        resolve();
+                    })
+                    .catch(error => {
+                        reject();
+                        throw new Error(error.message);
+                    });
             })
-            .catch(error => {
-                reject();
-                throw new Error(error.message);
-            });
+            .catch(error => console.error(error.message));
     })
 
     const rawDataRetrieval = (rawData, catData) => new Promise((resolve) => {
@@ -82,7 +86,9 @@ function formDataRetrieval(dataParts) {
         imageRetrieval(imageFile, newCatData),
         rawDataRetrieval(rawData, newCatData)
     ])
-        .then(() => initCats(newCatData))
+        .then(() => {
+            initCats(newCatData)
+        })
         .catch(error => console.error(error.message));
 }
 
@@ -92,6 +98,9 @@ function initCats(newCat) {
     fs.readFile('./data/cats.json', { encoding: 'utf-8' })
         .then(resp => {
             cats.push(JSON.parse(resp)[0]);
+            if (cats[0] === undefined) {
+                cats = [];
+            }
             addNewCat(newCat, cats);
         })
         .catch(error => console.error(error.message));
@@ -101,5 +110,6 @@ function addNewCat(newCat, existingCats) {
     existingCats.push(newCat);
     const catsJson = JSON.stringify(existingCats, null, 2);
     fs.writeFile('./data/cats.json', catsJson, { encoding: 'utf-8' })
-        .catch(error => console.error(error));
+        .then(() => console.log('It works!'))
+        .catch(error => console.error(error.message));
 }
