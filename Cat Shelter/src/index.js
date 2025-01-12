@@ -4,9 +4,14 @@ import { homePageLogic } from "./logic/homePageLogic.js";
 import { loadStyles } from "./logic/loadPageResources.js";
 import { addBreedLogic } from "./logic/addBreedLogic.js";
 import { addCatLogic } from "./logic/addCatLogic.js";
+import { loadImages } from "./logic/loadCatImages.js";
 
 const server = http.createServer((req, res) => {
-    const pathname = req.url;
+    let pathname = req.url;
+
+    if (pathname.includes('/content/images/cat_images')) {
+        pathname = '/content/images/cat_images';
+    }
 
     switch (pathname) {
         case '/content/styles/site.css':
@@ -20,6 +25,9 @@ const server = http.createServer((req, res) => {
             break;
         case '/cats/add-breed':
             addBreedLogic(req, res);
+            break;
+        case '/content/images/cat_images':
+            loadImages(req, res);
             break;
     }
 })
