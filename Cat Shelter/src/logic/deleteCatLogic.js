@@ -1,6 +1,44 @@
 import { fs } from "../../lib/coreLibraries.js";
+import { deleteCatHtml } from "../views/catShelter.html.js";
 
 export function deleteCat(req, res) {
+    const method = req.url.split('/').pop();
+
+    switch (method) {
+        case 'delete-method?':
+            catDeletion(req, res);
+            return;
+    }
+
+
+    const chosenCatId = req.url.split('/').pop();
+
+    fs.readFile('./data/cats.json', { encoding: 'utf-8' })
+        .then(resp => {
+            const originalCatsJsonList = [];
+            JSON.parse(resp).map(cat => originalCatsJsonList.push(cat));
+
+            for (const curCat of originalCatsJsonList) {
+                const curCatId = Object.keys(curCat).at(0);
+
+                if (chosenCatId === curCatId) {
+                    const chosenCatData = Object.values(curCat).at(0);
+
+                    res.writeHead(200, {
+                        'content-type': 'text/html'
+                    });
+                    res.write(deleteCatHtml(chosenCatData));
+                    res.end();
+                }
+            }
+        })
+        .catch(error => console.error(error.message));
+}
+
+function catDeletion(req, res) {
+    const newUrl = req.url.split('/');
+    newUrl.pop();
+    req.url = newUrl.join('/');
     const pathname = req.url;
     const catId = pathname.split('/').pop();
 
@@ -47,7 +85,7 @@ export function deleteCat(req, res) {
         deleteImageDir()
     ])
         .then(() => {
-            res.writeHead(303, { 'Location': 'http://localhost:5050/' });
+            res.writeHead(303, { 'Location': '/' })
             res.end();
         })
 }

@@ -10,7 +10,7 @@ export function addBreedLogic(req, res) {
         break;
     }
 
-    res.writeHead(201, {
+    res.writeHead(200, {
         'content-type': 'text/html'
     });
     res.write(addBreedHtml);
