@@ -1,6 +1,6 @@
 import express from 'express';
 import handlebars from "express-handlebars";
-import homeController from './controllers/home-controller.js'
+import router from './routes.js'
 
 const app = express();
 const port = 5050;
@@ -11,6 +11,6 @@ app.use('/static', express.static('src/public'));
 app.set('view engine', 'hbs');
 app.set('views', './src/views');
 
-app.use(homeController);
+app.use(router);
 
 app.listen(port, () => console.log('Server is listening on http://localhost:5050...'));
