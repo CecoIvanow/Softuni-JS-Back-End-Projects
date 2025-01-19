@@ -24,7 +24,10 @@ router.get('/details/:userId', (req, res) => {
 })
 
 router.get('/search', (req, res) => {
-    res.render('search');
+    const filter = req.query;
+    const movies = movieServices.getAll(filter);
+    
+    res.render('search', {movies} );
 })
 
 export default router;
