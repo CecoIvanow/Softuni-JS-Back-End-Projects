@@ -10,8 +10,22 @@ function findMovie(movieId) {
     return movieData.at(0);
 }
 
-function getAll() {
-    return movies;
+function getAll(filter = {}) {
+    let result = movies;
+
+    if (filter.title) {
+        result = result.filter(el => el.title.toLowerCase().includes(filter.title.toLowerCase()));    
+    }
+
+    if (filter.genre) {
+        result = result.filter(el => el.genre.toLowerCase().includes(filter.genre.toLowerCase()));
+    }
+
+    if (filter.year) {
+        result = result.filter(el => el.year === filter.year);
+    }
+
+    return result;
 }
 
 export default {
