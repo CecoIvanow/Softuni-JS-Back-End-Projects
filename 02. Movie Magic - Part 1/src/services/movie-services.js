@@ -10,7 +10,12 @@ function findMovie(movieId) {
     return movieData.at(0);
 }
 
+function getAll() {
+    return movies;
+}
+
 export default {
     findMovie,
+    getAll,
     create
 }
