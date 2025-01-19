@@ -15,4 +15,12 @@ router.post('/create', (req, res) => {
     res.redirect('/');
     res.end();
 })
+
+router.get('/details/:userId', (req, res) => {
+    const movieId = req.params.userId;
+    const movie = movieServices.findMovie(movieId)
+    
+    res.render('details', { movie });
+})
+
 export default router;
