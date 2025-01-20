@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { v4 as uuid } from "uuid";
 import movieServices from "../services/movie-services.js";
 
 const router = Router();
@@ -10,9 +9,6 @@ router.get('/create', (req, res) => {
 
 router.post('/create', (req, res) => {
     const movieData = req.body;
-    
-    const id = uuid();
-    movieData.id = id;
     movieServices.create(movieData);
 
     res.redirect('/');
@@ -22,7 +18,7 @@ router.post('/create', (req, res) => {
 router.get('/details/:userId', (req, res) => {
     const movieId = req.params.userId;
     const movie = movieServices.findMovie(movieId)
-    
+
     res.render('details', { movie });
 })
 
@@ -30,7 +26,7 @@ router.get('/search', (req, res) => {
     const filter = req.query;
     const movies = movieServices.getAll(filter);
 
-    res.render('search', {movies} );
+    res.render('search', { movies });
 })
 
 export default router;
