@@ -1,6 +1,10 @@
 import movies from "../movies.js"
+import { v4 as uuid } from "uuid";
 
 function create(movieData) {
+    const id = uuid();
+    movieData.id = id;
+
     movies.push(movieData);
 }
 
