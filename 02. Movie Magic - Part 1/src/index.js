@@ -1,11 +1,16 @@
 import express from 'express';
 import handlebars from "express-handlebars";
 import router from './routes.js'
+import movieRatingHelper from './helpers/rating-helper.js';
 
 const app = express();
 const port = 5050;
 
-app.engine('hbs', handlebars.engine());
+app.engine('hbs', handlebars.engine( {
+    helpers: {
+        movieRating: movieRatingHelper
+    }
+} ));
 app.use('/static', express.static('src/public'));
 app.use(express.urlencoded({ extended: false }));
 
