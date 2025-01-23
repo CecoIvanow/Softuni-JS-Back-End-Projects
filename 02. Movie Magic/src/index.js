@@ -14,7 +14,7 @@ app.engine('hbs', handlebars.engine( {
     }
 } ));
 
-const URI = 'process.env.DATABASE_URI';
+const URI = process.env.DATABASE_URI;
 
 try {
     mongoose.connect(URI);
