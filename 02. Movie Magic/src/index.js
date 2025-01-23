@@ -2,6 +2,8 @@ import express from 'express';
 import handlebars from "express-handlebars";
 import router from './routes.js'
 import movieRatingHelper from './helpers/rating-helper.js';
+import mongoose from 'mongoose';
+import 'dotenv/config'
 
 const app = express();
 const port = 5050;
@@ -11,6 +13,18 @@ app.engine('hbs', handlebars.engine( {
         movieRating: movieRatingHelper
     }
 } ));
+
+const URI = process.env.DATABASE_URI;
+
+try {
+    mongoose.connect(URI);
+
+    console.log('Connected to database');
+} catch (error) {
+    console.error('Could not connect to database');
+    console.error(error.message);
+}
+
 app.use('/static', express.static('src/public'));
 app.use(express.urlencoded({ extended: false }));
 

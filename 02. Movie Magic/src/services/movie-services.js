@@ -1,23 +1,19 @@
-import movies from "../movies.js"
-import { v4 as uuid } from "uuid";
+import Movie from "../models/Movies.js";
 
-function create(movieData) {
-    const id = uuid();
-    
-    movieData.id = id;
-    movieData.rating = Number(movieData.rating);
+async function create(movieData) {
+    const movie = new Movie(movieData);
 
-    movies.push(movieData);
+    await movie.save();
 }
 
 function findMovie(movieId) {
-    const movieData = movies.filter(movie => movie.id === movieId);
+    const movieData = Movie.findById(movieId);
 
     return movieData.at(0);
 }
 
-function getAll(filter = {}) {
-    let result = movies;
+async function getAll(filter = {}) {
+    let result = await Movie.find({}).lean();
 
     if (filter.title) {
         result = result.filter(el => el.title.toLowerCase().includes(filter.title.toLowerCase()));    
