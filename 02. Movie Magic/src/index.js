@@ -11,6 +11,9 @@ const port = 5050;
 app.engine('hbs', handlebars.engine( {
     helpers: {
         movieRating: movieRatingHelper
+    },
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
     }
 } ));
 

@@ -15,9 +15,9 @@ router.post('/create', (req, res) => {
     res.end();
 })
 
-router.get('/details/:userId', (req, res) => {
+router.get('/details/:userId', async (req, res) => {
     const movieId = req.params.userId;
-    const movie = movieServices.findMovie(movieId)
+    const movie = await movieServices.findMovie(movieId)
 
     res.render('details', { movie });
 })

@@ -6,10 +6,10 @@ async function create(movieData) {
     await movie.save();
 }
 
-function findMovie(movieId) {
-    const movieData = Movie.findById(movieId);
+async function findMovie(movieId) {
+    const movieData = await Movie.findById(movieId);
 
-    return movieData.at(0);
+    return movieData;
 }
 
 async function getAll(filter = {}) {
