@@ -1,13 +1,10 @@
 import movies from "../movies.js"
-import { v4 as uuid } from "uuid";
+import Movie from "../models/Movies.js";
 
-function create(movieData) {
-    const id = uuid();
-    
-    movieData.id = id;
-    movieData.rating = Number(movieData.rating);
+async function create(movieData) {
+    const movie = new Movie(movieData);
 
-    movies.push(movieData);
+    await movie.save();
 }
 
 function findMovie(movieId) {
