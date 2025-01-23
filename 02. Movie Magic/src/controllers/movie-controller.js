@@ -22,9 +22,9 @@ router.get('/details/:userId', (req, res) => {
     res.render('details', { movie });
 })
 
-router.get('/search', (req, res) => {
+router.get('/search', async (req, res) => {
     const filter = req.query;
-    const movies = movieServices.getAll(filter);
+    const movies = await movieServices.getAll(filter);
 
     res.render('search', { movies });
 })
