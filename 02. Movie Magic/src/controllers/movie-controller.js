@@ -4,7 +4,7 @@ import movieServices from "../services/movie-services.js";
 const router = Router();
 
 router.get('/create', (req, res) => {
-    res.render('create');
+    res.render('movies/create');
 });
 
 router.post('/create', (req, res) => {
@@ -19,14 +19,14 @@ router.get('/details/:userId', async (req, res) => {
     const movieId = req.params.userId;
     const movie = await movieServices.findMovie(movieId)
 
-    res.render('details', { movie });
+    res.render('movies/details', { movie });
 })
 
 router.get('/search', async (req, res) => {
     const filter = req.query;
     const movies = await movieServices.getAll(filter);
 
-    res.render('search', { movies });
+    res.render('movies/search', { movies });
 })
 
 export default router;
