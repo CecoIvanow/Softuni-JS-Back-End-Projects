@@ -1,5 +1,6 @@
 import { Router } from "express";
 import movieServices from "../services/movie-services.js";
+import castServices from "../services/cast-services.js";
 
 const router = Router();
 
@@ -32,8 +33,9 @@ router.get('/search', async (req, res) => {
 router.get('/:movieId/attach-cast', async (req, res) => {
     const movieId = req.params.movieId;
     const movie = await movieServices.findMovie(movieId);
+    const cast = await castServices.getAll();
 
-    res.render('movies/attach', { movie })
+    res.render('movies/attach', { movie, cast })
 })
 
 export default router;

@@ -6,6 +6,13 @@ async function create(castData) {
     await cast.save();
 }
 
+async function getAll() {
+    const allCast = await Cast.find({});
+
+    return allCast;
+}
+
 export default {
-    create
+    create,
+    getAll
 }

@@ -23,7 +23,7 @@ const castsSchema = new Schema ({
     },
     movie: {
         type: String,
-        required: true 
+        required: false 
     }
 })
 
