@@ -37,7 +37,7 @@ const moviesSchema = new Schema({
         type: String,
         required: true
     },
-    cast: [{
+    casts: [{
         type: Types.ObjectId,
         ref: 'Cast'
     }]
