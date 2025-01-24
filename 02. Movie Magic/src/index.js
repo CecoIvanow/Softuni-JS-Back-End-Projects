@@ -9,6 +9,7 @@ const app = express();
 const port = 5050;
 
 app.engine('hbs', handlebars.engine( {
+    extname: 'hbs',
     helpers: {
         movieRating: movieRatingHelper
     },
