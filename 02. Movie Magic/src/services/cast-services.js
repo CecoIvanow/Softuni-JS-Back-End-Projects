@@ -6,10 +6,10 @@ async function create(castData) {
     await cast.save();
 }
 
-async function getAll() {
-    const allCast = await Cast.find({});
+async function getAll(filter = {}) {
+    let query = await Cast.find( {_id: {$nin: filter.exclude} } );
 
-    return allCast;
+    return query;
 }
 
 export default {
