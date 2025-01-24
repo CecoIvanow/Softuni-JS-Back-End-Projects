@@ -29,4 +29,11 @@ router.get('/search', async (req, res) => {
     res.render('movies/search', { movies });
 })
 
+router.get('/:movieId/attach-cast', async (req, res) => {
+    const movieId = req.params.movieId;
+    const movie = await movieServices.findMovie(movieId);
+
+    res.render('movies/attach', { movie })
+})
+
 export default router;
