@@ -15,7 +15,7 @@ const castsSchema = new Schema ({
     },
     'name-in-movie':{
         type: String,
-        required: false // TODO: Need to change it when the rest is implemented
+        required: true // TODO: Need to change it when the rest is implemented
     },
     'cast-image': {
         type: String,
@@ -23,10 +23,10 @@ const castsSchema = new Schema ({
     },
     movie: {
         type: String,
-        required: true 
+        required: false 
     }
 })
 
-const Cast = method('Cast', castsSchema);
+const Cast = model('Cast', castsSchema);
 
 export default Cast;

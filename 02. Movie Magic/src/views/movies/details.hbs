@@ -22,13 +22,35 @@
                     </div>
 
                     <p class="disc">{{movie.description}}</p>
-                        <p class="card-category">Category: {{movie.category}}</p>
+                    <p class="card-category">Category: {{movie.category}}</p>
+
+                    <div style="display: flex; justify-content: center;">
+                        <a href="/movies/{{movie.id}}/attach-cast" class="details">Attach Cast</a>
+                    </div>
+
                 </div>
             </div>
             <div class="card_right">
                 <img src="{{movie.imageUrl}}"
                     alt="{{movie.title}}">
             </div>
+        </div>
+
+        <div class="main-cast-card">
+            {{#each movie.casts}}
+                <div class="cast-card">
+                    <div class="card-img">
+                        <img src="{{'cast-image'}}"
+                            alt="cast">
+                    </div>
+                    <div class="cast-info">
+                        <h1>{{name}}</h1>
+                        <h3>Age: {{age}}</h3>
+                        <h3>Born: {{born}}</h3>
+                        <h3>Name in Movie: {{'name-in-movie'}}</h3>
+                    </div>
+                </div>
+            {{/each}}
         </div>
 
     </section>
