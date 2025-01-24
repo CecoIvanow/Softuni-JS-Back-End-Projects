@@ -7,34 +7,34 @@ async function create(movieData) {
 }
 
 async function findMovie(movieId) {
-    const result = await Movie.findById(movieId).populate('casts');
+    const query = await Movie.findById(movieId).populate('casts');
 
-    return result;
+    return query;
 }
 
 async function getAll(filter = {}) {
-    let result = await Movie.find({}).lean();
+    let query = await Movie.find({}).lean();
 
     if (filter.title) {
-        result = result.filter(el => el.title.toLowerCase().includes(filter.title.toLowerCase()));    
+        query = query.filter(el => el.title.toLowerCase().includes(filter.title.toLowerCase()));    
     }
 
     if (filter.genre) {
-        result = result.filter(el => el.genre.toLowerCase().includes(filter.genre.toLowerCase()));
+        query = query.filter(el => el.genre.toLowerCase().includes(filter.genre.toLowerCase()));
     }
 
     if (filter.year) {
-        result = result.filter(el => el.year === filter.year);
+        query = query.filter(el => el.year === filter.year);
     }
 
-    return result;
+    return query;
 }
 
 async function attachCast(movieId, castId) {
-    const movie = await Movie.findById(movieId);
-    movie.casts.push(castId);
+    const query = await Movie.findById(movieId);
+    query.casts.push(castId);
     
-    await movie.save();
+    await query.save();
 }
 
 export default {
