@@ -16,8 +16,8 @@ router.post('/create', (req, res) => {
     res.end();
 })
 
-router.get('/details/:userId', async (req, res) => {
-    const movieId = req.params.userId;
+router.get('/:movieId/details', async (req, res) => {
+    const movieId = req.params.movieId;
     const movie = await movieServices.findMovie(movieId)
 
     res.render('movies/details', { movie });
@@ -44,7 +44,7 @@ router.post('/:movieId/attach-cast', async (req, res) => {
     
     await movieServices.attachCast(movieId, castId);
 
-    res.redirect(`/movies/details/${movieId}`);
+    res.redirect(`/movies/${movieId}/details`);
 })
 
 export default router;
