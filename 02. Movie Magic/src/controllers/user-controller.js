@@ -11,7 +11,7 @@ userController.post('/register', (req, res) => {
     const userData = req.body;
 
     userServices.register(userData);
-    res.end()
+    res.redirect('/')
 })
 
 export default userController;
