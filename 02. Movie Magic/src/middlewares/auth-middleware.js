@@ -8,8 +8,9 @@ export const authMiddleware = () => (req, res, next) => {
     }
 
     try {
-        const userData = jwt.verify(token, process.env.SECRET)
-        req.user = userData;
+        const decodedToken = jwt.verify(token, process.env.SECRET)
+
+        req.user = decodedToken;
     } catch (error) {
         res.clearCookie('auth');
         res.redirect('/404');
