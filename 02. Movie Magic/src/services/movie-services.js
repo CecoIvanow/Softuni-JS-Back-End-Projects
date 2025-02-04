@@ -39,7 +39,12 @@ async function attachCast(movieId, castId) {
     await query.save();
 }
 
+async function deleteMovie(movieId) {
+    return await Movie.findByIdAndDelete(movieId);
+}
+
 export default {
+    deleteMovie,
     attachCast,
     findMovie,
     getAll,
