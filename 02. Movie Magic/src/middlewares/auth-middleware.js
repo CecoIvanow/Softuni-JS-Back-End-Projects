@@ -11,9 +11,9 @@ export const authMiddleware = () => (req, res, next) => {
         const userData = jwt.verify(token, process.env.SECRET)
         req.user = userData;
     } catch (error) {
+        res.clearCookie('auth');
         res.redirect('/404');
     }
-    
+        
     next();
-    
 } 
