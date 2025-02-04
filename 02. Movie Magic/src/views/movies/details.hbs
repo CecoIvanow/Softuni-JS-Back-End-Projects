@@ -25,9 +25,11 @@
                     <p class="card-category">Category: {{movie.category}}</p>
 
                     <div style="display: flex; justify-content: center;">
+                        {{#if isCreator}}
                         <a href="/movies/{{movie.id}}/attach-cast" class="details">Attach Cast</a>
                         <a href="/movies/{{movie.id}}/edit" class="details">Edit</a>
                         <a href="/movies/{{movie.id}}/delete" class="details">Delete</a>
+                        {{/if}}
                     </div>
 
                 </div>
