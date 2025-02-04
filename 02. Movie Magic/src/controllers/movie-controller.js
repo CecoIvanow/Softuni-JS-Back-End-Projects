@@ -1,6 +1,7 @@
 import { Router } from "express";
 import movieServices from "../services/movie-services.js";
 import castServices from "../services/cast-services.js";
+import Movie from "../models/Movies.js";
 
 const movieController = Router();
 
@@ -10,7 +11,9 @@ movieController.get('/create', (req, res) => {
 
 movieController.post('/create', (req, res) => {
     const movieData = req.body;
-    movieServices.create(movieData);
+    const creatorId = req.user.id
+
+    movieServices.create(movieData, creatorId);
 
     res.redirect('/');
     res.end();
@@ -45,6 +48,18 @@ movieController.post('/:movieId/attach-cast', async (req, res) => {
     await movieServices.attachCast(movieId, castId);
 
     res.redirect(`/movies/${movieId}/details`);
+})
+
+movieController.get('/:movieId/delete', async (req, res) => {
+    const movieId = req.params.movieId;
+    const movie = await Movie.findById(movieId);
+
+    if (!movie) {
+        res.redirect('/404');
+    }
+
+    movieServices.deleteMovie(movieId);
+    res.redirect('/');
 })
 
 export default movieController;

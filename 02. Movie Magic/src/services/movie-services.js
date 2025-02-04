@@ -1,6 +1,8 @@
 import Movie from "../models/Movies.js";
 
-async function create(movieData) {
+async function create(movieData, creatorId) {
+    movieData.creator = creatorId;
+
     const movie = new Movie(movieData);
 
     await movie.save();
@@ -37,7 +39,12 @@ async function attachCast(movieId, castId) {
     await query.save();
 }
 
+async function deleteMovie(movieId) {
+    return await Movie.findByIdAndDelete(movieId);
+}
+
 export default {
+    deleteMovie,
     attachCast,
     findMovie,
     getAll,
