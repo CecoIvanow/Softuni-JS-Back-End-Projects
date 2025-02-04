@@ -18,4 +18,17 @@ userController.get('/login', (req, res) => {
     res.render('user/login');
 })
 
+userController.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const token = await userServices.login(email, password);
+        res.cookie('auth', token, { httpOnly: true });
+        res.redirect('/');
+    } catch (error) {
+        res.redirect('/404')
+    }
+    
+})
+
 export default userController;

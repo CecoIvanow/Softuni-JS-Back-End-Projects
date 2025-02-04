@@ -4,6 +4,7 @@ import router from './routes.js'
 import movieRatingHelper from './helpers/rating-helper.js';
 import mongoose from 'mongoose';
 import 'dotenv/config'
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const port = 5050;
@@ -29,6 +30,7 @@ try {
     console.error(error.message);
 }
 
+app.use(cookieParser());
 app.use('/static', express.static('src/public'));
 app.use(express.urlencoded({ extended: false }));
 
