@@ -1,6 +1,8 @@
 import Movie from "../models/Movies.js";
 
-async function create(movieData) {
+async function create(movieData, creatorId) {
+    movieData.creator = creatorId;
+
     const movie = new Movie(movieData);
 
     await movie.save();

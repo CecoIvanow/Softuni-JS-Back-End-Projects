@@ -10,7 +10,9 @@ movieController.get('/create', (req, res) => {
 
 movieController.post('/create', (req, res) => {
     const movieData = req.body;
-    movieServices.create(movieData);
+    const creatorId = req.user.id
+
+    movieServices.create(movieData, creatorId);
 
     res.redirect('/');
     res.end();
