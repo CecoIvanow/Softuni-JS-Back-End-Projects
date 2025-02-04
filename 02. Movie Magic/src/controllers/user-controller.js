@@ -1,9 +1,34 @@
 import { Router } from "express";
+import userServices from "../services/user-services.js";
 
-const router = Router();
+const userController = Router();
 
-router.get('/register', (req, res) => {
+userController.get('/register', (req, res) => {
     res.render('user/register');
 })
 
-export default router;
+userController.post('/register', (req, res) => {
+    const userData = req.body;
+
+    userServices.register(userData);
+    res.redirect('/')
+})
+
+userController.get('/login', (req, res) => {
+    res.render('user/login');
+})
+
+userController.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const token = await userServices.login(email, password);
+        res.cookie('auth', token, { httpOnly: true });
+        res.redirect('/');
+    } catch (error) {
+        res.redirect('/404')
+    }
+    
+})
+
+export default userController;

@@ -3,6 +3,8 @@ import handlebars from "express-handlebars";
 import router from './routes.js'
 import movieRatingHelper from './helpers/rating-helper.js';
 import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
+import { authMiddleware } from './middlewares/auth-middleware.js';
 import 'dotenv/config'
 
 const app = express();
@@ -31,6 +33,8 @@ try {
 
 app.use('/static', express.static('src/public'));
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(authMiddleware());
 
 app.set('view engine', 'hbs');
 app.set('views', './src/views');
