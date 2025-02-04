@@ -11,6 +11,8 @@ export const authMiddleware = () => (req, res, next) => {
         const decodedToken = jwt.verify(token, process.env.SECRET)
 
         req.user = decodedToken;
+        res.locals.user = decodedToken;
+        
     } catch (error) {
         res.clearCookie('auth');
         res.redirect('/404');
