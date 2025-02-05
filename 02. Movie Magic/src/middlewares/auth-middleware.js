@@ -21,11 +21,11 @@ export const authMiddleware = () => (req, res, next) => {
     next();
 }
 
-export const isLogged = (userData) => {
-    
-    if (userData) {
-        return true;;
-    } else {
-        return false;
+export const isLogged = () => (req, res, next) => {
+
+    if (req.user) {
+        next();
     }
+    
+    return res.redirect('/login');
 }
