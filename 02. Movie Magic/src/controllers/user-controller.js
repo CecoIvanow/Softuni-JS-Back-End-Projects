@@ -1,5 +1,6 @@
 import { Router } from "express";
 import userServices from "../services/user-services.js";
+import { isUserAuth } from "../middlewares/auth-middleware.js";
 
 const userController = Router();
 
@@ -30,7 +31,7 @@ userController.post('/login', async (req, res) => {
     }
 })
 
-userController.get('/logout', (req, res) => {
+userController.get('/logout', isUserAuth(), (req, res) => {
     res.clearCookie('auth');
     res.redirect('/');
 })

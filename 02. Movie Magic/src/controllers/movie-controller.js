@@ -2,14 +2,15 @@ import { Router } from "express";
 import movieServices from "../services/movie-services.js";
 import castServices from "../services/cast-services.js";
 import Movie from "../models/Movies.js";
+import { isUserAuth } from "../middlewares/auth-middleware.js";
 
 const movieController = Router();
 
-movieController.get('/create', (req, res) => {
+movieController.get('/create', isUserAuth(), (req, res) => {
     res.render('movies/create');
 });
 
-movieController.post('/create', (req, res) => {
+movieController.post('/create', isUserAuth(), (req, res) => {
     const movieData = req.body;
     const creatorId = req.user.id
 
@@ -34,7 +35,7 @@ movieController.get('/search', async (req, res) => {
     res.render('movies/search', { movies });
 })
 
-movieController.get('/:movieId/attach-cast', async (req, res) => {
+movieController.get('/:movieId/attach-cast', isUserAuth(), async (req, res) => {
     const movieId = req.params.movieId;
     const movie = await movieServices.findMovie(movieId);
     const casts = await castServices.getAll( {exclude: movie.casts} );
@@ -42,7 +43,7 @@ movieController.get('/:movieId/attach-cast', async (req, res) => {
     res.render('movies/attach', { movie, casts })
 })
 
-movieController.post('/:movieId/attach-cast', async (req, res) => {
+movieController.post('/:movieId/attach-cast', isUserAuth(), async (req, res) => {
     const movieId = req.params.movieId;
     const castId = req.body.cast;
     
@@ -51,7 +52,7 @@ movieController.post('/:movieId/attach-cast', async (req, res) => {
     res.redirect(`/movies/${movieId}/details`);
 })
 
-movieController.get('/:movieId/delete', async (req, res) => {
+movieController.get('/:movieId/delete', isUserAuth(), async (req, res) => {
     const movieId = req.params.movieId;
     const movie = await Movie.findById(movieId);
 
