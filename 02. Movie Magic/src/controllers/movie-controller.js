@@ -96,4 +96,20 @@ movieController.get('/:movieId/edit', isUserAuth(), async (req, res) => {
     res.render('movies/edit', { movie, categories });
 })
 
+movieController.post('/:movieId/edit', isUserAuth(), async (req, res) => {
+    const movieId = req.params.movieId;
+    const movie = await Movie.findById(movieId);
+    const isCreator = movie.creator?.equals(req.user?.id);
+
+    if (!isCreator) {
+        return res.redirect('/');
+    }
+
+    const newMovieData = req.body;
+    
+    await movieServices.editMovie(movieId, newMovieData);
+
+    res.redirect(`/movies/${movieId}/details`);
+})
+
 export default movieController;
