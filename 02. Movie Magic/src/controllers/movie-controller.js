@@ -20,7 +20,7 @@ movieController.post('/create', isUserAuth(), (req, res) => {
     res.end();
 })
 
-movieController.get('/:movieId/details', async (req, res) => {
+movieController.get('/:movieId/details', isUserAuth(), async (req, res) => {
     const movieId = req.params.movieId;
     const movie = await movieServices.findMovie(movieId)
     const isCreator = movie.creator?.equals(req.user?.id);
@@ -38,6 +38,12 @@ movieController.get('/search', async (req, res) => {
 movieController.get('/:movieId/attach-cast', isUserAuth(), async (req, res) => {
     const movieId = req.params.movieId;
     const movie = await movieServices.findMovie(movieId);
+    const isCreator = movie.creator?.equals(req.user?.id);
+
+    if (!isCreator) {
+        return res.redirect('/');
+    }
+
     const casts = await castServices.getAll( {exclude: movie.casts} );
 
     res.render('movies/attach', { movie, casts })
@@ -46,6 +52,12 @@ movieController.get('/:movieId/attach-cast', isUserAuth(), async (req, res) => {
 movieController.post('/:movieId/attach-cast', isUserAuth(), async (req, res) => {
     const movieId = req.params.movieId;
     const castId = req.body.cast;
+    const movie = await movieServices.findMovie(movieId);
+    const isCreator = movie.creator?.equals(req.user?.id);
+
+    if (!isCreator) {
+        return res.redirect('/');
+    }
     
     await movieServices.attachCast(movieId, castId);
 
@@ -55,9 +67,14 @@ movieController.post('/:movieId/attach-cast', isUserAuth(), async (req, res) => 
 movieController.get('/:movieId/delete', isUserAuth(), async (req, res) => {
     const movieId = req.params.movieId;
     const movie = await Movie.findById(movieId);
+    const isCreator = movie.creator?.equals(req.user?.id);
+
+    if (!isCreator) {
+        return res.redirect('/');
+    }
 
     if (!movie) {
-        res.redirect('/404');
+        return res.redirect('/404');
     }
 
     movieServices.deleteMovie(movieId);
