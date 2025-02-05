@@ -19,4 +19,13 @@ export const authMiddleware = () => (req, res, next) => {
     }
         
     next();
-} 
+}
+
+export const isLogged = () => (req, res, next) => {
+
+    if (req.user) {
+        next();
+    }
+    
+    return res.redirect('/login');
+}
