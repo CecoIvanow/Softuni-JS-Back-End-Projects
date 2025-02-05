@@ -43,9 +43,14 @@ async function deleteMovie(movieId) {
     return await Movie.findByIdAndDelete(movieId);
 }
 
+async function editMovie(movieId, movieData) {
+    return await Movie.findByIdAndUpdate(movieId, movieData)
+}
+
 export default {
     deleteMovie,
     attachCast,
+    editMovie,
     findMovie,
     getAll,
     create

@@ -21,11 +21,22 @@ export const authMiddleware = () => (req, res, next) => {
     next();
 }
 
-export const isLogged = () => (req, res, next) => {
+export const isUserAuth = () => (req, res, next) => {
 
     if (req.user) {
         next();
+        return
     }
     
     return res.redirect('/login');
+}
+
+export const isGuestAuth = () => (req, res, next) => {
+     
+    if (!req.user) {
+        next();
+        return;
+    }
+
+    return res.redirect('/');
 }

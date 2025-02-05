@@ -1,13 +1,14 @@
 import { Router } from "express";
 import castServices from "../services/cast-services.js";
+import { isUserAuth } from "../middlewares/auth-middleware.js";
 
 const castController = Router();
 
-castController.get('/create', (req, res) => {
+castController.get('/create', isUserAuth(), (req, res) => {
     res.render('cast/create');
 })
 
-castController.post('/create', (req, res) => {
+castController.post('/create', isUserAuth(), (req, res) => {
     const castData = req.body
     castServices.create(castData);
 
