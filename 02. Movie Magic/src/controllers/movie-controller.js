@@ -3,6 +3,7 @@ import movieServices from "../services/movie-services.js";
 import castServices from "../services/cast-services.js";
 import Movie from "../models/Movies.js";
 import { isUserAuth } from "../middlewares/auth-middleware.js";
+import { getMovieCategoriesViewData } from "../views-data/movies-data.js";
 
 const movieController = Router();
 
@@ -44,7 +45,7 @@ movieController.get('/:movieId/attach-cast', isUserAuth(), async (req, res) => {
         return res.redirect('/');
     }
 
-    const casts = await castServices.getAll( {exclude: movie.casts} );
+    const casts = await castServices.getAll({ exclude: movie.casts });
 
     res.render('movies/attach', { movie, casts })
 })
@@ -58,7 +59,7 @@ movieController.post('/:movieId/attach-cast', isUserAuth(), async (req, res) => 
     if (!isCreator) {
         return res.redirect('/');
     }
-    
+
     await movieServices.attachCast(movieId, castId);
 
     res.redirect(`/movies/${movieId}/details`);
@@ -81,8 +82,18 @@ movieController.get('/:movieId/delete', isUserAuth(), async (req, res) => {
     res.redirect('/');
 })
 
-movieController.get('/:movieId/edit', isUserAuth(), (req, res) => {
-    res.render('movies/edit');
+movieController.get('/:movieId/edit', isUserAuth(), async (req, res) => {
+    const movieId = req.params.movieId;
+    const movie = await Movie.findById(movieId);
+    const isCreator = movie.creator?.equals(req.user?.id);
+
+    if (!isCreator) {
+        return res.redirect('/');
+    }
+
+    const categories = getMovieCategoriesViewData(movie.category);
+
+    res.render('movies/edit', { movie, categories });
 })
 
 export default movieController;
