@@ -1,6 +1,8 @@
 import { Router } from "express";
 import userServices from "../services/user-services.js";
 import { isGuestAuth, isUserAuth } from "../middlewares/auth-middleware.js";
+import User from "../models/User.js";
+import { getErrorMessage } from "../utils/error-utils.js";
 
 const userController = Router();
 
@@ -8,10 +10,32 @@ userController.get('/register', isGuestAuth(), (req, res) => {
     res.render('user/register');
 })
 
-userController.post('/register', isGuestAuth(), (req, res) => {
+userController.post('/register', isGuestAuth(), async (req, res) => {
     const userData = req.body;
+    const result = await User.findOne({ email: userData.email })
 
-    userServices.register(userData);
+    try {
+        if (userData.password !== userData.rePassword) {
+            throw new Error("Passwords do not match");
+        }
+    
+
+        if (result?.email === userData.email) {
+            throw new Error("Email already in use");
+        }
+
+    } catch (error) {
+        return res.render('user/register', { error: getErrorMessage(error)})
+    }
+
+    console.log(result);
+
+    try {
+        await userServices.register(userData);
+    } catch (error) {
+        return res.render('user/register', { error: getErrorMessage(error)})
+    }
+    
     res.redirect('/')
 })
 
